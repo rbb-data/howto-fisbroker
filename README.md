@@ -17,10 +17,20 @@ How to download geodata from a fis broker wfs (web feature server) via qgis and 
   2. **Download Geodata.** Open the plugin by clicking on 'Web' -> 'WFS 2.0 Client' -> 'WFS 2.0 Client'. Type in an url of a WFS. For example : http://fbinter.stadt-berlin.de/fb/wfs/geometry/senstadt/re_hausumringe. Click on 'Get Capabilities'. After that you can define a bounding box, a feature limit and a SRS (spatial reference system). For the datasets of houses you must choose featureCount = 550000 and SRS = EPSG:4258. SRS = EPSG:25833 should always work for the Berlin datasets.
   3. **Save as shapefile**
 
-If you need to convert the srs of the shapefile you can do it with the help of ogr2ogr:
+If you need to convert the srs of the shapefile you can do it with the help of `ogr2ogr`:
 This command converts `input.shp`(SRS = EPSG:25833) to `output.shp`(SRS = EPSG:4326). 
 ```
 $ ogr2ogr -t_srs EPSG:4326 -s_srs EPSG:25833 output.shp input.shp
 ```
 
 Get information of the different spatial reference systems at http://epsg.io/
+
+#### Use only ogr2ogr
+
+`ogr2ogr`, the tool mentioned above, is part of the [gdal suite](https://gdal.org/programs/ogr2ogr.html). You can use it to download all data from a WFS server like so:
+
+```
+ogr2ogr -f GeoJSON output.geojson WFS:https://path-to-wfs.com/endpoint
+```
+
+This will produce an `output.geojson` that contains all data from the endpoint. You can define other output formats and reproject the data as described above if needed.
